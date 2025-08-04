@@ -1,0 +1,153 @@
+/* Estilo Base y Fondo */
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(160deg, #1a1a1a 0%, #3d0000 50%, #000000 100%);
+    color: #e0e0e0;
+    overflow: hidden;
+}
+
+/* Contenedor principal del juego */
+.game-container {
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 3.5rem;
+    color: #ffffff;
+    text-shadow: 2px 2px 8px rgba(207, 0, 0, 0.8);
+    margin-bottom: 20px;
+}
+
+/* Contenedor de estadísticas (temporizador) */
+.stats-container {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px 25px;
+    border-radius: 10px;
+    border: 1px solid #c00;
+    display: inline-block;
+}
+
+/* Tablero de Juego */
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    perspective: 1200px; /* Activa la perspectiva para el efecto 3D */
+}
+
+/* Estilo de la Carta */
+.card {
+    width: 130px;
+    height: 130px;
+    position: relative;
+    transform-style: preserve-3d; /* Permite que los hijos se posicionen en un espacio 3D */
+    transition: transform 0.7s;
+    cursor: pointer;
+}
+
+.card.flipped {
+    transform: rotateY(180deg); /* Animación de volteo */
+}
+
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; /* Oculta el reverso del elemento cuando no es visible */
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    background: #333;
+    border: 2px solid #555;
+    overflow: hidden; 
+}
+
+.card-front img, .card-back img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Hace que la imagen cubra todo el espacio sin deformarse */
+    border-radius: 6px;
+}
+
+.card-front {
+    transform: rotateY(180deg); /* Posiciona la cara frontal ya girada */
+    background-color: #eee;
+}
+
+.card.matched {
+    pointer-events: none; /* Desactiva clics en cartas emparejadas */
+    opacity: 0.4;
+}
+
+/* Ventana Modal de resultado */
+.modal {
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden; /* Oculto por defecto */
+    opacity: 0;
+    transition: visibility 0.3s, opacity 0.3s;
+}
+
+.modal.visible {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-content {
+    text-align: center;
+}
+
+.modal-content img {
+    max-width: 85vw;
+    max-height: 75vh;
+    border-radius: 15px;
+    border: 3px solid #c00;
+}
+
+#restart-button {
+    margin-top: 25px;
+    padding: 15px 35px;
+    font-size: 1.5rem;
+    font-family: 'Playfair Display', serif;
+    color: #fff;
+    background-color: #a00000;
+    border: 2px solid #ff4d4d;
+    border-radius: 8px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#restart-button:hover {
+    background-color: #c00;
+    transform: scale(1.05);
+}
+
+/* Diseño Responsivo para móviles */
+@media (max-width: 620px) {
+    .card {
+        width: 80px;
+        height: 80px;
+    }
+    h1 {
+        font-size: 2.2rem;
+    }
+}

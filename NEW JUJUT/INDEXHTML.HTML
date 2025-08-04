@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Memoria Personalizable</title>
+    <!-- Enlace al archivo de estilos CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Enlace a fuentes de Google para un mejor diseño -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Contenedor principal del juego -->
+    <main class="game-container">
+        <h1>Juego de Memoria</h1>
+        <div class="stats-container">
+            <div id="timer">Tiempo: 60</div>
+        </div>
+        
+        <!-- El tablero donde aparecerán las cartas -->
+        <div id="game-board" class="game-board">
+            <!-- Las cartas se generan dinámicamente con JavaScript -->
+        </div>
+    </main>
+
+    <!-- Ventana emergente (Modal) para mostrar el resultado final -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <img id="modal-image" src="" alt="Resultado del juego">
+            <button id="restart-button">Jugar de nuevo</button>
+        </div>
+    </div>
+
+    <!-- Enlace al archivo de lógica JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

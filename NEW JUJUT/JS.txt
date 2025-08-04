@@ -1,0 +1,133 @@
+document.addEventListener('DOMContentLoaded', () => {
+    // --- ELEMENTOS DEL DOM ---
+    const gameBoard = document.getElementById('game-board');
+    const timerElement = document.getElementById('timer');
+    const modal = document.getElementById('modal');
+    const modalImage = document.getElementById('modal-image');
+    const restartButton = document.getElementById('restart-button');
+
+    // --- CONFIGURACIÓN DEL JUEGO ---
+    // Nuevas imágenes de Vincenzo
+    const cardImages = [
+        'v1.jpg', 'v2.jpg', 'v3.jpg', 'v4.jpg',
+        'v5.jpg', 'v6.jpg', 'v7.jpg', 'v8.jpg'
+    ];
+    const totalTime = 60;
+
+    // --- ESTADO DEL JUEGO ---
+    let cards = [];
+    let firstCard = null;
+    let secondCard = null;
+    let lockBoard = false;
+    let matchedPairs = 0;
+    let timer;
+    let timeLeft = totalTime;
+
+    // --- ALGORITMOS Y LÓGICA ---
+
+    function initGame() {
+        matchedPairs = 0;
+        lockBoard = false;
+        firstCard = null;
+        secondCard = null;
+        gameBoard.innerHTML = '';
+        modal.classList.remove('visible');
+
+        let shuffledCards = [...cardImages, ...cardImages]
+            .sort(() => 0.5 - Math.random());
+
+        shuffledCards.forEach(imageName => {
+            const cardElement = document.createElement('div');
+            cardElement.classList.add('card');
+            cardElement.dataset.name = imageName.split('.')[0];
+
+            cardElement.innerHTML = `
+                <div class="card-face card-back">
+                    <img src="img/back.png" alt="Reverso de la carta">
+                </div>
+                <div class="card-face card-front">
+                    <img src="img/${imageName}" alt="Personaje de Vincenzo">
+                </div>
+            `;
+            gameBoard.appendChild(cardElement);
+            cardElement.addEventListener('click', handleCardClick);
+        });
+
+        startTimer();
+    }
+
+    function handleCardClick() {
+        if (lockBoard) return;
+        if (this === firstCard) return;
+
+        this.classList.add('flipped');
+
+        if (!firstCard) {
+            firstCard = this;
+            return;
+        }
+
+        secondCard = this;
+        lockBoard = true;
+
+        checkForMatch();
+    }
+
+    function checkForMatch() {
+        const isMatch = firstCard.dataset.name === secondCard.dataset.name;
+        isMatch ? disableMatchedCards() : unflipCards();
+    }
+
+    function disableMatchedCards() {
+        firstCard.removeEventListener('click', handleCardClick);
+        secondCard.removeEventListener('click', handleCardClick);
+        firstCard.classList.add('matched');
+        secondCard.classList.add('matched');
+
+        matchedPairs++;
+        resetBoard();
+
+        if (matchedPairs === cardImages.length) {
+            endGame(true);
+        }
+    }
+
+    function unflipCards() {
+        setTimeout(() => {
+            firstCard.classList.remove('flipped');
+            secondCard.classList.remove('flipped');
+            resetBoard();
+        }, 1200);
+    }
+
+    function resetBoard() {
+        [firstCard, secondCard, lockBoard] = [null, null, false];
+    }
+
+    function startTimer() {
+        timeLeft = totalTime;
+        timerElement.textContent = `Tiempo: ${timeLeft}`;
+        clearInterval(timer);
+
+        timer = setInterval(() => {
+            timeLeft--;
+            timerElement.textContent = `Tiempo: ${timeLeft}`;
+            if (timeLeft <= 0) {
+                endGame(false);
+            }
+        }, 1000);
+    }
+
+    function endGame(isWinner) {
+        clearInterval(timer);
+        setTimeout(() => {
+            modal.classList.add('visible');
+            // Imágenes de victoria/derrota de Vincenzo
+            modalImage.src = isWinner ? 'img/ganaste.gif' : 'img/perdiste.gif';
+        }, 500);
+    }
+
+    restartButton.addEventListener('click', initGame);
+
+    initGame();
+});
